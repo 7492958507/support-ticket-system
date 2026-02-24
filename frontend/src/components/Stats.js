@@ -96,7 +96,7 @@ function Stats({ refreshKey }) {
                   className={`bar-fill category-${key}`}
                   style={{
                     width: stats.total_tickets > 0
-                      ? `(value / stats.total_tickets) * 100}%`
+                      ? `${(value / stats.total_tickets) * 100}%`
                       : '0%'
                   }}
                 />
