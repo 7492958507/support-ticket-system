@@ -15,12 +15,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy project files
 COPY . .
 
-# Create a script to run migrations and start the server
-RUN echo '#!/bin/bash\n\
-set -e\n\
-python manage.py migrate\n\
-python manage.py runserver 0.0.0.0:8000' > /app/entrypoint.sh && chmod +x /app/entrypoint.sh
-
 EXPOSE 8000
 
-CMD ["/app/entrypoint.sh"]
+# Note: Command is specified in docker-compose.yml
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
