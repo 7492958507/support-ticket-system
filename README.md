@@ -60,6 +60,59 @@ The application will be available at:
 - **Backend API**: http://localhost:8000/api/tickets/
 - **Database**: postgres://postgres:postgres@localhost:5432/tickets_db
 
+### Live Deployment
+
+The project is configured for deployment on Vercel + Heroku (free tiers) or any other platform. After deploying, update these URLs:
+
+- **Frontend**: `https://<your-vercel-front-url>.vercel.app`
+- **Backend API**: `https://<your-heroku-back-url>.herokuapp.com/api/tickets/`
+
+## Deployment on Vercel + Heroku (Free)
+
+### Prerequisites
+- Vercel account (https://vercel.com)
+- Heroku account (https://heroku.com)
+- GitHub repository connected
+
+### Step 1: Deploy Backend on Heroku
+1. Install Heroku CLI: `npm install -g heroku`
+2. Login: `heroku login`
+3. Create app: `heroku create support-ticket-backend`
+4. Add PostgreSQL: `heroku addons:create heroku-postgresql:hobby-dev`
+5. Set environment variables:
+   ```
+   heroku config:set DEBUG=False
+   heroku config:set SECRET_KEY=your-secret-key-here
+   heroku config:set LLM_PROVIDER=anthropic
+   heroku config:set LLM_API_KEY=<your-anthropic-key or leave blank>
+   heroku config:set ALLOWED_HOSTS=*
+   ```
+6. Deploy: `git push heroku master`
+7. Run migrations: `heroku run python backend/manage.py migrate`
+
+### Step 2: Deploy Frontend on Vercel
+1. Go to https://vercel.com
+2. Click "Import Project"
+3. Connect GitHub repo: `7492958507/support-ticket-system`
+4. Configure:
+   - Root Directory: `frontend`
+   - Build Command: `npm run build`
+   - Output Directory: `build`
+   - Environment Variables:
+     ```
+     REACT_APP_API_URL=https://<your-heroku-app>.herokuapp.com/api/tickets
+     ```
+5. Deploy
+
+### Step 3: Update Frontend API URL
+After both deploy, update Vercel's `REACT_APP_API_URL` with the actual Heroku backend URL and redeploy.
+
+### Live URLs
+- Frontend: `https://support-ticket-frontend.vercel.app`
+- Backend: `https://support-ticket-backend.herokuapp.com/api/tickets/`
+
+Heroku free tier sleeps after inactivity; Vercel is always on.
+
 ### Initial Data
 
 Once the containers are running:
